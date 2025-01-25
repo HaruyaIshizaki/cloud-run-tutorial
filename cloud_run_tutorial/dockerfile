@@ -1,0 +1,27 @@
+FROM python:3.12-slim-bullseye
+
+WORKDIR /app
+
+COPY requirements.txt /app
+COPY hello.py /app
+COPY templates /app/templates
+
+# PostgreSQLの開発ツールをインストール
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Flaskアプリの依存関係をインストール
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 必要なポートを公開（Cloud Runではデフォルトで8080を使用）
+EXPOSE 8080
+
+# gunicornを使用してFlaskアプリを起動
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "hello:app"]
+
+
+### tutorial
+# docker build -t flask-app .
+# docker run -p 8080:8080 flask-app

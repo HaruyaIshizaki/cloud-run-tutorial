@@ -36,7 +36,8 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-# python3 venv
+# python3
 venv/
-
+.env
 .DS_Store
+__pycache__/
